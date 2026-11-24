@@ -1,0 +1,21 @@
+# This is a generated file. Not intended for manual editing.
+services:
+  AG-Notes-Gateway:
+    build:
+      context: "/Users/theo/Documents/EFREI-TPs/devops/AG-Notes/Services/AG-Notes-Gateway"
+      dockerfile: "Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net9.0/AG-Notes-Gateway.dll"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "ag-notes-gateway:dev"
+    ports: []
+    volumes:
+    - "/Users/theo/Documents/EFREI-TPs/devops/AG-Notes/Services/AG-Notes-Gateway:/app:rw"
+    - "/Users/theo/Documents/EFREI-TPs/devops/AG-Notes:/src:rw"
+    - "/Users/theo/.nuget/packages:/home/app/.nuget/packages"
+    working_dir: "/app"

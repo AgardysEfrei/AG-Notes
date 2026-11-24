@@ -1,0 +1,5 @@
+services:
+  AG-Notes-Gateway:
+    build: AG-Notes-Gateway/.
+    ports:
+      - "5000:8080"

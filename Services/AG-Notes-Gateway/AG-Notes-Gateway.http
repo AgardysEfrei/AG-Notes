@@ -1,0 +1,6 @@
+@AG_Notes_Gateway_HostAddress = http://localhost:5250
+
+GET {{AG_Notes_Gateway_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
