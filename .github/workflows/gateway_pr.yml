@@ -7,6 +7,7 @@ on:
       - "Services/AGNotes.Tests/**"
       - "Services/AGNotesGateway/**"
       - ".github/workflows/gateway_pr.yml"
+      - ".editorconfig"
 
 # Annule les exécutions obsolètes quand un nouveau commit est poussé sur la PR
 concurrency:
