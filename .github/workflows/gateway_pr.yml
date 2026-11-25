@@ -3,6 +3,10 @@ name: PR checks
 on:
   pull_request:
     branches: [main]
+    paths:
+      - "Service/AGNotes.Tests/**"
+      - "Service/AGNotesGateway/**"
+      - ".github/workflows/gateway_pr.yml"
 
 # Annule les exécutions obsolètes quand un nouveau commit est poussé sur la PR
 concurrency:
@@ -15,7 +19,8 @@ permissions:
 env:
   DOTNET_VERSION: "9.0.x"
   # À adapter à votre dépôt
-  SOLUTION: AG-Notes.sln
+  GATEWAY_PROJECT: Services/AGNotesGateway
+  TESTS_PROJECT: Services/AG-Notes.Tests/AGNotes.Tests.csproj
   DOCKER_CONTEXT: .
   DOCKERFILE: Services/AGNotesGateway/Dockerfile
   DOTNET_NOLOGO: "true"
@@ -34,10 +39,10 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Restore
-        run: dotnet restore ${{ env.SOLUTION }}
+        run: dotnet restore ${{ env.TESTS_PROJECT }}
 
       - name: Run tests
-        run: dotnet test ${{ env.SOLUTION }} --no-restore --configuration Release --logger "trx;LogFileName=test-results.trx" --results-directory ./TestResults
+        run: dotnet test ${{ env.TESTS_PROJECT }} --no-restore --configuration Release --logger "trx;LogFileName=test-results.trx" --results-directory ./TestResults
 
       - name: Upload test results
         if: always()
@@ -60,20 +65,33 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Restore
-        run: dotnet restore ${{ env.SOLUTION }}
+        run: |
+          dotnet restore ${{ env.TESTS_PROJECT }}
+          dotnet restore ${{ env.GATEWAY_PROJECT }}
 
       # Les analyseurs Microsoft (Microsoft.CodeAnalysis.NetAnalyzers) sont inclus dans le SDK.
       # Tout avertissement d'analyseur fait échouer le build.
-      - name: Build with analyzers (warnings as errors)
+      - name: Build tests with analyzers (warnings as errors)
         run: >
-          dotnet build ${{ env.SOLUTION }}
+          dotnet build ${{ env.TESTS_PROJECT }}
+          --no-restore
+          --configuration Release
+          -p:EnforceCodeStyleInBuild=true
+          -p:TreatWarningsAsErrors=true
+
+      - name: Build gateway with analyzers (warnings as errors)
+        run: >
+          dotnet build ${{ env.GATEWAY_PROJECT }}
           --no-restore
           --configuration Release
           -p:EnforceCodeStyleInBuild=true
           -p:TreatWarningsAsErrors=true
 
       - name: Check formatting
-        run: dotnet format ${{ env.SOLUTION }} --verify-no-changes --no-restore
+        run: dotnet format ${{ env.TESTS_PROJECT }} --verify-no-changes --no-restore
+
+      - name: Check formatting
+        run: dotnet format ${{ env.GATEWAY_PROJECT }} --verify-no-changes --no-restore
 
   docker-build:
     name: Docker build
