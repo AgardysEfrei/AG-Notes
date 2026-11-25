@@ -9,7 +9,6 @@
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
         <AnalysisMode>All</AnalysisMode>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <WarningsNotAsError>CA1515</WarningsNotAsError>
     </PropertyGroup>
 
     <ItemGroup>

@@ -1,4 +1,4 @@
-using AGNotesGateway.Controllers; 
+using AGNotesGateway.Controllers;
 using Xunit;
 
 namespace AG_Notes.Tests.Gateway.Tests;
