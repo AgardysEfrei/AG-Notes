@@ -4,8 +4,8 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - "Service/AGNotes.Tests/**"
-      - "Service/AGNotesGateway/**"
+      - "Services/AGNotes.Tests/**"
+      - "Services/AGNotesGateway/**"
       - ".github/workflows/gateway_pr.yml"
 
 # Annule les exécutions obsolètes quand un nouveau commit est poussé sur la PR
