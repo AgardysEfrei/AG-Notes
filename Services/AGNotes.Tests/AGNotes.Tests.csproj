@@ -19,4 +19,8 @@
       <ProjectReference Include="..\AGNotesGateway\AGNotesGateway.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <EditorConfigFiles Include=".editorconfig" />
+    </ItemGroup>
+
 </Project>
