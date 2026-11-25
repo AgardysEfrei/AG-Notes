@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "services", "services", "{B1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AGNotesGateway", "Services\AGNotesGateway\AGNotesGateway.csproj", "{240097B8-E1B3-4CAC-A547-FF302B3664C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AG-Notes.Tests", "Services\AG-Notes.Tests\AG-Notes.Tests.csproj", "{A629657D-75B9-42BE-BB49-75AC30782776}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AGNotes.Tests", "Services\AGNotes.Tests\AGNotes.Tests.csproj", "{A629657D-75B9-42BE-BB49-75AC30782776}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

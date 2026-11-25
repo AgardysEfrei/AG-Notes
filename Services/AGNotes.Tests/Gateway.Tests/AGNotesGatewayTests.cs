@@ -1,7 +1,7 @@
 using AGNotesGateway.Controllers;
 using Xunit;
 
-namespace AG_Notes.Tests.Gateway.Tests;
+namespace AGNotes.Tests.Gateway.Tests;
 
 public class AgNotesGatewayTests
 {
