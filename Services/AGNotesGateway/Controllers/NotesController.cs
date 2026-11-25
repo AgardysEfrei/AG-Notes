@@ -1,7 +1,6 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AG_Notes_Gateway.Controllers;
+namespace AGNotesGateway.Controllers;
 
 [ApiController]
 [Route("[controller]")]

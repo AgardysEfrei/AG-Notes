@@ -6,6 +6,9 @@
         <RootNamespace>AG_Notes.Tests</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+        <AnalysisMode>All</AnalysisMode>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <ItemGroup>
@@ -13,7 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\AG-Notes-Gateway\AG-Notes-Gateway.csproj" />
+      <ProjectReference Include="..\AGNotesGateway\AGNotesGateway.csproj" />
     </ItemGroup>
 
 </Project>
