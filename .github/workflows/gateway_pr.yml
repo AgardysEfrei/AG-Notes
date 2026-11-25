@@ -1,0 +1,97 @@
+name: PR checks
+
+on:
+  pull_request:
+    branches: [main]
+
+# Annule les exécutions obsolètes quand un nouveau commit est poussé sur la PR
+concurrency:
+  group: pr-checks-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_VERSION: "9.0.x"
+  # À adapter à votre dépôt
+  SOLUTION: AG-Notes.sln
+  DOCKER_CONTEXT: .
+  DOCKERFILE: Services/AGNotesGateway/Dockerfile
+  DOTNET_NOLOGO: "true"
+  DOTNET_CLI_TELEMETRY_OPTOUT: "true"
+
+jobs:
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore
+        run: dotnet restore ${{ env.SOLUTION }}
+
+      - name: Run tests
+        run: dotnet test ${{ env.SOLUTION }} --no-restore --configuration Release --logger "trx;LogFileName=test-results.trx" --results-directory ./TestResults
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: TestResults/*.trx
+          retention-days: 7
+
+  code-analysis:
+    name: Code analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: tests
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore
+        run: dotnet restore ${{ env.SOLUTION }}
+
+      # Les analyseurs Microsoft (Microsoft.CodeAnalysis.NetAnalyzers) sont inclus dans le SDK.
+      # Tout avertissement d'analyseur fait échouer le build.
+      - name: Build with analyzers (warnings as errors)
+        run: >
+          dotnet build ${{ env.SOLUTION }}
+          --no-restore
+          --configuration Release
+          -p:EnforceCodeStyleInBuild=true
+          -p:TreatWarningsAsErrors=true
+
+      - name: Check formatting
+        run: dotnet format ${{ env.SOLUTION }} --verify-no-changes --no-restore
+
+  docker-build:
+    name: Docker build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: [tests, code-analysis]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      # Build seul, sans push
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ env.DOCKER_CONTEXT }}
+          file: ${{ env.DOCKERFILE }}
+          push: false
+          tags: ag-notes-gateway:pr-${{ github.event.pull_request.number }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
