@@ -1,6 +1,12 @@
 name: PR checks
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - "Services/AGNotes.Tests/**"
+      - "Services/AGNotesGateway/**"
+      - ".github/workflows/gateway_pr.yml"
   pull_request:
     branches: [main]
     paths:
