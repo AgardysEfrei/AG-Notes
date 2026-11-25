@@ -6,6 +6,10 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>AG_Notes_Gateway</RootNamespace>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+        <AnalysisMode>All</AnalysisMode>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <WarningsNotAsError>CA1515</WarningsNotAsError>
     </PropertyGroup>
 
     <ItemGroup>
